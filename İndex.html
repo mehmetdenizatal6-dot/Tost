@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tostum Yaaaa ❤️</title>
+    <!-- Modern Fontlar -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@1,700;1,800&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Konfeti Patlama Efekti Kütüphanesi -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #0f0f10, #1c1d22);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+            color: white;
+        }
+        .main-card {
+            background: #ffffff;
+            color: #111111;
+            padding: 60px 45px;
+            border-radius: 28px;
+            box-shadow: 0 20px 45px rgba(0,0,0,0.6);
+            text-align: center;
+            max-width: 650px;
+            width: 90%;
+            z-index: 10;
+        }
+        .main-card h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-style: italic;
+            font-weight: 800;
+            font-size: 2.3rem;
+            margin-top: 0;
+            margin-bottom: 35px;
+            letter-spacing: -0.5px;
+            background: linear-gradient(45deg, #111111, #d32f2f);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-transform: uppercase;
+        }
+        .container {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            min-height: 100px;
+        }
+        .btn {
+            font-family: 'Montserrat', sans-serif;
+            font-style: italic;
+            font-weight: 700;
+            padding: 16px 36px;
+            border-radius: 14px;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            transition: all 0.25s ease;
+            text-decoration: none;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #btn-hayir {
+            background: #ff69b4;
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 105, 180, 0.3);
+        }
+        #btn-hayir:hover {
+            background: #ff1493;
+        }
+        #btn-evet {
+            background: #d32f2f;
+            color: white;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+            z-index: 20;
+        }
+
+        /* Fullscreen Video Ekranı */
+        #video-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0,0,0,0.95);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        /* Kapatma Butonu */
+        .close-btn {
+            position: absolute;
+            top: 25px;
+            right: 30px;
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            font-size: 24px;
+            font-weight: bold;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s ease;
+            z-index: 1001;
+        }
+        .close-btn:hover {
+            background: #d32f2f;
+            border-color: #d32f2f;
+            transform: scale(1.1);
+        }
+        
+        /* Video Çerçeve Düzenlemeleri */
+        .video-wrapper {
+            display: inline-block;
+            max-width: 90vw;
+            max-height: 75vh;
+            border-radius: 16px;
+            box-shadow: 0 0 35px rgba(211, 47, 47, 0.6);
+            overflow: hidden;
+            background: #000;
+        }
+        
+        video {
+            display: block;
+            width: auto;
+            height: auto;
+            max-width: 90vw;
+            max-height: 75vh;
+            object-fit: contain;
+            border-radius: 16px;
+            outline: none;
+        }
+
+        .congrats-text {
+            font-family: 'Montserrat', sans-serif;
+            font-style: italic;
+            font-weight: 800;
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+            color: #ffffff;
+            text-shadow: 0 0 15px rgba(255,255,255,0.4);
+            text-transform: uppercase;
+            text-align: center;
+        }
+
+        /* Çıkış Veda Ekranı */
+        #exit-screen {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #0f0f10;
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            text-align: center;
+        }
+        #exit-screen h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-style: italic;
+            font-weight: 800;
+            font-size: 3rem;
+            color: #ff69b4;
+            text-shadow: 0 0 25px rgba(255, 105, 180, 0.6);
+            animation: pulse 1s infinite alternate;
+        }
+
+        @keyframes pulse {
+            from { transform: scale(1); }
+            to { transform: scale(1.05); }
+        }
+
+        /* Ayar Butonu (Sol Alt) */
+        .settings-btn {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            z-index: 100;
+        }
+        #file-input { display: none; }
+    </style>
+</head>
+<body>
+
+    <div class="main-card" id="main-card">
+        <h1>Beni seviyomusun?</h1>
+        <div class="container">
+            <button class="btn" id="btn-hayir" onclick="hayirTiklandi()">Yook Sevmiyom kabizim ben</button>
+            <button class="btn" id="btn-evet" onclick="evetTiklandi()">Seni Çoookk seviyom Tostum</button>
+        </div>
+    </div>
+
+    <!-- Video Modal -->
+    <div id="video-modal">
+        <!-- Kapatma Butonu -->
+        <button class="close-btn" onclick="sayfayiKapat()">&times;</button>
+        
+        <div class="congrats-text">Biliyordum Zaten Tostum! ❤️</div>
+        <div class="video-wrapper">
+            <video id="kendi-videom" controls autoplay>
+                <source id="video-source" src="Videolar/Seyfo.mp4" type="video/mp4">
+                Tarayıcınız video etiketini desteklemiyor.
+            </video>
+        </div>
+    </div>
+
+    <!-- Çıkış Veda Ekranı -->
+    <div id="exit-screen">
+        <h2>Görüşürüz Tostum ❤️</h2>
+    </div>
+
+    <!-- Video Seçme Ayarı -->
+    <button class="settings-btn" onclick="document.getElementById('file-input').click()">📁 Videonu Seç (Opsiyonel)</button>
+    <input type="file" id="file-input" accept="video/*" onchange="videoYukle(event)">
+
+    <script>
+        let evetBtn = document.getElementById("btn-evet");
+        let hayirBtn = document.getElementById("btn-hayir");
+        let tiklamaSayisi = 0;
+
+        function hayirTiklandi() {
+            tiklamaSayisi++;
+            let yeniBoyut = 1 + (tiklamaSayisi * 0.45);
+            let yeniPaddingV = 16 + (tiklamaSayisi * 10);
+            let yeniPaddingH = 36 + (tiklamaSayisi * 18);
+            
+            evetBtn.style.transform = `scale(${yeniBoyut})`;
+            evetBtn.style.padding = `${yeniPaddingV}px ${yeniPaddingH}px`;
+            evetBtn.style.fontSize = `${18 + (tiklamaSayisi * 3)}px`;
+
+            if (tiklamaSayisi >= 5) {
+                hayirBtn.style.display = "none";
+            }
+        }
+
+        function evetTiklandi() {
+            document.getElementById("main-card").style.display = "none";
+            
+            let modal = document.getElementById("video-modal");
+            modal.style.display = "flex";
+            
+            let video = document.getElementById("kendi-videom");
+            video.play();
+
+            confetti({
+                particleCount: 180,
+                spread: 100,
+                origin: { y: 0.6 }
+            });
+        }
+
+        function sayfayiKapat() {
+            let modal = document.getElementById("video-modal");
+            let video = document.getElementById("kendi-videom");
+            let exitScreen = document.getElementById("exit-screen");
+            
+            video.pause();
+            video.currentTime = 0;
+            modal.style.display = "none";
+            
+            // Görüşürüz ekranını göster
+            exitScreen.style.display = "flex";
+
+            // 1.5 saniye sonra sayfayı tamamen ilk haline sıfırla
+            setTimeout(() => {
+                exitScreen.style.display = "none";
+                document.getElementById("main-card").style.display = "block";
+                tiklamaSayisi = 0;
+                evetBtn.style.transform = "scale(1)";
+                evetBtn.style.padding = "16px 36px";
+                evetBtn.style.fontSize = "18px";
+                hayirBtn.style.display = "inline-flex";
+            }, 1500);
+        }
+
+        function videoYukle(event) {
+            let file = event.target.files[0];
+            if (file) {
+                let videoPlayer = document.getElementById("kendi-videom");
+                let fileURL = URL.createObjectURL(file);
+                videoPlayer.src = fileURL;
+                alert("Videon başarıyla yüklendi! Artık test edebilirsin.");
+            }
+        }
+    </script>
+</body>
+</html>
